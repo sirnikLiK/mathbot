@@ -1,0 +1,14 @@
+requests
+PyTelegramBotAPI
+sqlalchemy
+python-dotenv
+gitPython
+imghdr
+numpy
+pathlib
+tensorflow
+keras
+scipy
+idx2numpy
+matplotlib
+typing
