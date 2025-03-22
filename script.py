@@ -54,12 +54,11 @@ def after_text(message):
 
     try:
         expr = expr.replace("^", "**").replace("√", "math.sqrt")
-
-        result = eval(f"import('math').{expr}" if "sqrt" in expr else expr)
-
-        bot.reply_to(message,
-                    f"🔢 Результат: {message.text} = {round(result, 4) if isinstance(result, float) else result}")
-
+        
+        result = eval(f"__import__('math').{expr}" if "sqrt" in expr else expr)
+        
+        bot.reply_to(message, f"🔢 Результат: {message.text} = {round(result, 4) if isinstance(result, float) else result}")
+    
     except ZeroDivisionError:
         bot.reply_to(message, "⛔️ Ошибка: Деление на ноль!")
     except Exception as e:
@@ -72,13 +71,6 @@ def get_broadcast_picture(message):
     file = bot.download_file(file_path)
     with open("expression.png", "wb") as code:
         code.write(file)
-
-
-@bot.message_handler(func=lambda message: True)
-def handle_message(message):
-    bot.send_message(message.chat.id,
-        "Введите команду /help, чтобы узнать команды"
-        )
 
 
 bot.polling(none_stop=True)
