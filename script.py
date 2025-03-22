@@ -1,3 +1,5 @@
+from pyexpat.errors import messages
+
 import conf
 import telebot
 import re
@@ -6,6 +8,7 @@ from telebot import types
 
 bot = telebot.TeleBot(conf.TOKEN)
 
+
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.send_message(
@@ -13,16 +16,23 @@ def send_welcome(message):
         'Здравствуйте! Чтобы узнать информацию о боте введите команду "/help"'
     )
 
+
 @bot.message_handler(commands=['help'])
 def send_welcome(message):
     bot.send_message(
         message.chat.id,
         """Этот бот поможет решить вам уравнения.
-        Чтобы бот решил вам ваше выржание введите команду """
+            Чтобы бот решил вам ваше выражание введите команду """
     )
 
 @bot.message_handler(commands=['calc'])
-def calculate_expression(message):
+def text(message):
+    msg = bot.send_message(
+        message.chat.id,
+        "Введите выражение:"
+    )
+    bot.register_next_step_handler(msg, after_text)
+def after_text(message):
     expr = message.text.replace(" ", "").replace(",", ".")
     
     if not re.match(r'^[\d+\-*/().^√]+$', expr):
