@@ -16,4 +16,6 @@ def send_welcome(message):
         message.chat.id,
         'Этот бот поможет решить вам уравнения.'
     )
+
+
 bot.polling(none_stop=True)
