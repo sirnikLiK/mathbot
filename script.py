@@ -50,5 +50,15 @@ def after_text(message):
         bot.reply_to(message, "⛔ Ошибка: Деление на ноль!")
     except Exception as e:
         bot.reply_to(message, f"❌ Ошибка вычисления: {str(e)}")
+        
+
+
+@bot.message_handler(func=lambda m: True, content_types=['photo'])
+def get_broadcast_picture(message):
+	file_path = bot.get_file(message.photo[0].file_id).file_path
+	file = bot.download_file(file_path)
+	with open("expression.png", "wb") as code:
+		code.write(file)
+
 
 bot.polling(none_stop=True)
