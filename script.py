@@ -61,14 +61,6 @@ def after_text(message):
         bot.reply_to(message, "⛔️ Ошибка: Деление на ноль!")
     except Exception as e:
         bot.reply_to(message, f"❌ Ошибка вычисления: {str(e)}")
-        
-        
-@bot.message_handler(content_types=["text", "sticker", "pinned_message", "photo", "audio"])
-def echo_msg(message):
-    if message.content_type == 'text':
-        bot.send_message(chatID, "Запрос от\n*{name} {last}*\n{text}".format(name=message.chat.first_name, last=message.chat.last_name, text=message.text), parse_mode="Markdown") #от кого идет сообщение и его содержание
-        bot.send_message(message.chat.id, "*{name}!*\n\nСпасибо за инфу".format(name=message.chat.first_name, last=message.chat.last_name, text=message.text), parse_mode="Markdown") #то что пойдет юзеру после отправки сообщения
-
 
 
 
