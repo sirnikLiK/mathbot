@@ -2,7 +2,7 @@
 import cv2
 
 # Load the input image
-image = cv2.imread(r"C:\Users\eliza\Desktop\school\mathbot\expression.png")
+image = cv2.imread(r"\mathbot\expression.png")
 #cv2.imshow('Original', image)
 
 
