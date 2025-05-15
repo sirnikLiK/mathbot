@@ -7,7 +7,7 @@ import re
 from uuid import uuid4
 from telebot import types
 
-#import latex_ocr
+import latex_ocr
 
 import sys
 
@@ -77,11 +77,6 @@ def text(message):
 def after_text(message):
     expr = message.text.replace(" ", "").replace(",", ".")
 
-    if not re.match(r"^[\d+\-*/().^√]*$", expr):
-        print([expr])
-        bot.reply_to(message, "⚠️ Ошибка: Используйте только цифры и операторы + - * / ^ ( )")
-        return
-
     try:
         expr = expr.replace("^", "**").replace("√", "math.sqrt")
 
@@ -93,7 +88,7 @@ def after_text(message):
     except ZeroDivisionError:
         bot.reply_to(message, "⛔️ Ошибка: Деление на ноль!")
     except Exception as e:
-        bot.reply_to(message, f"❌ Ошибка вычисления: {str(e)}")
+        bot.reply_to(message, f"⚠️ Ошибка: Используйте только цифры и операторы + - * / ^ ( )")
 
 
 def solve_equation(equation):
@@ -124,6 +119,24 @@ def the_equatation(message):
                      f'⚠️ Ошибка: Введите уравнение в формате "левая_часть = правая_часть" (например, "2*x + 3 = 7")')
 
 
+@bot.message_handler(func=lambda m: True, content_types=['photo'])
+def handle_math_photo(message):
+    try:
+        file_info = bot.get_file(message.photo[-1].file_id)
+        downloaded_file = bot.download_file(file_info.file_path)
+
+        temp_file = f"temp_math_{message.message_id}.png"
+        with open(temp_file, 'wb') as new_file:
+            new_file.write(downloaded_file)
+
+        result = latex_ocr.recognize_math_expression(temp_file)
+
+        #os.remove(temp_file)
+
+        bot.reply_to(message, result)
+
+    except Exception as e:
+        bot.reply_to(message, f"⚠️ Ошибка обработки: {str(e)}")
 
 
 @bot.message_handler(func=lambda message: True)
