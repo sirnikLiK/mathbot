@@ -7,7 +7,7 @@ import re
 from uuid import uuid4
 from telebot import types
 
-import latex_ocr
+#import latex_ocr
 
 import sys
 
