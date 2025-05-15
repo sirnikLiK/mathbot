@@ -1,7 +1,9 @@
 from pyexpat.errors import messages
 
 import conf
+import latex_ocr
 import telebot
+
 import re
 from uuid import uuid4
 from telebot import types
